@@ -1050,7 +1050,14 @@ CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
 export CHROMIUM_HEADLESS_GN_DEFINES
 
 mkdir -p third_party/node/linux/node-linux-x64/bin
-ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
+# ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
+# node esm module is not compatible on nodejs v10, so node 8.9.1 is needed to be installed by nvm
+# edit ~/.curlrc and write "proxy={scheme}://[{username}:{password}@]{host}:{port}" if proxy is needed
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+source ~/.bashrc
+nvm i 8.9.1
+ln -s ~/.nvm/versions/node/v8.9.1/bin/node third_party/node/linux/node-linux-x64/bin/node
+
 
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
